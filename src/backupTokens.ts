@@ -7,7 +7,7 @@ import { DATE_FORMAT } from "./constants";
 
 export const backupTokens = (
   tokenPath: string,
-  identifier: string
+  identifier: string,
 ): boolean => {
   const debugPrefix = getDebugPrefix("backupTokens()", identifier);
 
@@ -18,21 +18,28 @@ export const backupTokens = (
     const longLivedToken = JSON.parse(
       fs.readFileSync(
         getTokenNameInclPath(tokenPath, identifier, "LONG_LIVED_TOKEN"),
-        "utf-8"
-      )
+        "utf-8",
+      ),
     );
+    cheese.debug(debugPrefix, "longLivedToken", longLivedToken);
+
     fs.writeFileSync(
       getTokenNameInclPath(
         tokenPath,
         identifier,
         "LONG_LIVED_TOKEN",
-        nowAsString
+        nowAsString,
       ),
       JSON.stringify({ ...longLivedToken, backupAt: nowAsString }, null, 2),
-      "utf-8"
+      "utf-8",
     );
     return true;
   } catch (e) {
+    cheese.debug(
+      debugPrefix,
+      "Error when trying to backup long lived tokens:",
+      e,
+    );
     return false;
   }
 };
