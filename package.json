@@ -1,0 +1,58 @@
+{
+  "name": "instagram-data-fetcher",
+  "version": "1.0.0",
+  "description": "Fetch instagram picture data from one or more accounts, via long lived tokens",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
+  "bin": {
+    "igdf": "build/cli.js"
+  },
+  "scripts": {
+    "clear-build-folder": "rm -rf ./build",
+    "transpile": "tsc",
+    "fix-paths": "tsc-alias",
+    "make-cli-executable": "chmod +x ./build/cli.js",
+    "build": "yarn clear-build-folder && yarn transpile && yarn fix-paths && yarn make-cli-executable",
+    "dev": "yarn nodemon",
+    "test": "jest"
+  },
+  "keywords": [
+    "instagram",
+    "data",
+    "fetching",
+    "pictures",
+    "media",
+    "long lived token"
+  ],
+  "files": [
+    "build"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maks-io/instagram-data-fetcher.git"
+  },
+  "author": "Markus Kurzmann <markus@kurzmann.io>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/maks-io/instagram-data-fetcher/issues"
+  },
+  "homepage": "https://github.com/maks-io/instagram-data-fetcher#readme",
+  "dependencies": {
+    "axios": "^1.4.0",
+    "cheese-log": "^1.0.4",
+    "dayjs": "^1.11.9",
+    "minimist": "^1.2.8",
+    "update-notifier": "^6.0.2"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.2",
+    "@types/node": "^20.4.0",
+    "jest": "^29.6.1",
+    "nodemon": "^2.0.22",
+    "prettier": "^3.0.0",
+    "ts-jest": "^29.1.1",
+    "tsc": "^2.0.4",
+    "tsc-alias": "^1.8.7",
+    "typescript": "^5.1.6"
+  }
+}
