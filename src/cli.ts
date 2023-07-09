@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import minimist from "minimist";
+import { config as dotenvConfig } from "dotenv";
 import { validateConfigFile } from "./validateConfigFile.js";
 import { getHelp } from "./getHelp.js";
 import { Config } from "./Config";
@@ -10,6 +11,8 @@ import { backupTokens } from "./backupTokens.js";
 import { cleanupTokens } from "./cleanupTokens.js";
 import cheese from "cheese-log";
 import { writeData } from "./writeData";
+
+dotenvConfig()
 
 const packageJson = require("../package.json");
 const argv = minimist(process.argv.slice(2));
@@ -39,7 +42,11 @@ if (!c && !config) {
   process.exit(1);
 }
 
-cheese.config({ reportInitialization: false, showOrigin: true });
+cheese.config({
+  reportInitialization: false,
+  showOrigin: true,
+  allColorsDisabled: Boolean(process.env.CI),
+});
 
 const validationResult = validateConfigFile(c ?? config);
 // if string validationResult holds any content, validation failed:
