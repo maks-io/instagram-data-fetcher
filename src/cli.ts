@@ -12,7 +12,7 @@ import { cleanupTokens } from "./cleanupTokens.js";
 import cheese from "cheese-log";
 import { writeData } from "./writeData";
 
-dotenvConfig()
+dotenvConfig();
 
 const packageJson = require("../package.json");
 const argv = minimist(process.argv.slice(2));
@@ -44,7 +44,6 @@ if (!c && !config) {
 
 cheese.config({
   reportInitialization: false,
-  showOrigin: true,
   allColorsDisabled: Boolean(process.env.CI),
 });
 
@@ -76,6 +75,9 @@ try {
 }
 
 (async () => {
+  const successfulRuns: Config = [];
+  const unsuccessfulRuns: Config = [];
+
   for (let pc in parsedConfig) {
     const currentConfig = parsedConfig[pc];
     const { tokenPath, identifier, nrOfTokenBackups, mediaTargetPath } =
@@ -105,11 +107,30 @@ try {
 
     const writeDataSuccessful = writeData(identifier, media, mediaTargetPath);
     if (writeDataSuccessful) {
-      console.log("Successfully finished!");
-      process.exit(0);
+      successfulRuns.push(currentConfig);
     } else {
-      console.log("Some error occurred!");
-      process.exit(1);
+      successfulRuns.push(currentConfig);
     }
+  }
+
+  // report result:
+  if (unsuccessfulRuns.length === 0) {
+    console.log(`All ${successfulRuns.length} runs successful :)`);
+    process.exit(0);
+  } else if (successfulRuns.length === 0) {
+    console.log(`None of the ${successfulRuns.length} runs successful :(`);
+    process.exit(1);
+  } else {
+    console.log(
+      `Some runs successful: ${successfulRuns
+        .map((sr) => sr.identifier)
+        .join(", ")}`,
+    );
+    console.log(
+      `but others had errors: ${unsuccessfulRuns
+        .map((sr) => sr.identifier)
+        .join(", ")}`,
+    );
+    process.exit(1);
   }
 })();
