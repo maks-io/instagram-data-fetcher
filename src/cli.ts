@@ -99,8 +99,10 @@ try {
     const writeDataSuccessful = writeData(identifier, media, mediaTargetPath);
     if (writeDataSuccessful) {
       console.log("Successfully finished!");
+      process.exit(0);
     } else {
       console.log("Some error occurred!");
+      process.exit(1);
     }
   }
 })();
